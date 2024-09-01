@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
       return false;
     }
 
-    const user = await this.userService.findUserById(userId);
+    const user = await this.userService.findById(userId);
     return !!user;
   }
 }

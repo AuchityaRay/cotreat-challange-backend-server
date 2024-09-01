@@ -8,7 +8,7 @@ export class UserController {
 
   @Post('login')
   async login(@Body('username') username: string): Promise<{ userId: string }> {
-    const user = await this.userService.findOrCreateUser(username);
+    const user = await this.userService.findOrCreate(username);
     return { userId: user.id };
   }
 }

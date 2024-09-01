@@ -10,7 +10,7 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  async findOrCreateUser(username: string): Promise<User> {
+  async findOrCreate(username: string): Promise<User> {
     let user = await this.userRepository.findOne({ where: { username } });
 
     if (!user) {
@@ -21,7 +21,7 @@ export class UserService {
     return user;
   }
 
-  async findUserById(id: string): Promise<User | undefined> {
-    return this.userRepository.findOne({ where: { id } });
+  async findById(userId: string): Promise<User | undefined> {
+    return this.userRepository.findOne({ where: { id: userId } });
   }
 }
