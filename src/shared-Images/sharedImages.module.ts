@@ -13,5 +13,6 @@ import { SharedImagesController } from './sharedImages.controller';
   ],
   providers: [SharedImagesService],
   controllers: [SharedImagesController],
+    exports: [SharedImagesService]
 })
 export class SharedImagesModule {}

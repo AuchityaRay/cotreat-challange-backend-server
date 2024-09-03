@@ -1,7 +1,8 @@
-import { Controller, Post, Body, Param } from '@nestjs/common';
+import { Controller, Post, Body, Param, Get } from '@nestjs/common';
 import { NotFoundException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { SharedImagesService } from './sharedImages.service';
+import { SharedImage } from './sharedImage.entity';
 
 @Controller('shared-images')
 export class SharedImagesController {
@@ -21,5 +22,9 @@ export class SharedImagesController {
       throw new NotFoundException(`User with id ${userId} not found`);
     }
     return this.sharedImagesService.createSharedImage(user, imageTitle, imageUrl);
+  }
+  @Get()
+  async getAllSharedImages(): Promise<SharedImage[]> {
+    return this.sharedImagesService.findAll();
   }
 }

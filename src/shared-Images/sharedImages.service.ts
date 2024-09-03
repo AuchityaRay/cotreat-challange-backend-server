@@ -20,4 +20,8 @@ export class SharedImagesService {
     });
     return this.sharedImageRepository.save(sharedImage);
   }
+   // New method to fetch all shared images
+   async findAll(): Promise<SharedImage[]> {
+    return this.sharedImageRepository.find({ relations: ['user'] });
+  }
 }
