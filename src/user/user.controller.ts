@@ -16,4 +16,6 @@ export class UserController {
   async getUserById(@Param('id') userId: string): Promise<User> {
     return this.userService.findById(userId);
   }
+
+  
 }

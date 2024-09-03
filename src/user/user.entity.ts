@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { SharedImage } from 'src/shared-Images/sharedImage.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
 export class User {
@@ -7,4 +8,7 @@ export class User {
 
   @Column({ unique: true })
   username: string;
+
+  @OneToMany(() => SharedImage, (sharedImage) => sharedImage.user)
+  sharedImages: SharedImage[];
 }
