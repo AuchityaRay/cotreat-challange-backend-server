@@ -1,22 +1,35 @@
 version: '3.8'
-services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      DATABASE_HOST: db
-      DATABASE_PORT: 3036
-      DATABASE_USER: root
-      DATABASE_PASSWORD: password
-      DATABASE_NAME: mydb
-    depends_on:
-      - db
 
-  db:
-    image: mysql:8.0
+services:
+  backend:
+    build: .
+    container_name: nestjs-backend
+    restart: always
     ports:
-      - "3036:3306"
+      - '3000:3000'
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: mydb
+      - NODE_ENV=production
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=root
+      - DB_PASSWORD=secret
+      - DB_NAME=mydatabase
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: mydatabase
+      # MYSQL_USER: root
+      # MYSQL_PASSWORD: secret
+    ports:
+      - '3307:3306'
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
