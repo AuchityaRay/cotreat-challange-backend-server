@@ -3,7 +3,7 @@
 import { Injectable, ExecutionContext } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from './decorators/public.decorator'; // Import the public decorator
+import { IS_PUBLIC_KEY } from './decorators/public.decorator'; 
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -17,8 +17,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       context.getClass(),
     ]);
     if (isPublic) {
-      return true; // Skip guard if route is public
+      return true; 
     }
-    return super.canActivate(context); // Apply guard for protected routes
+    return super.canActivate(context); 
   }
 }
