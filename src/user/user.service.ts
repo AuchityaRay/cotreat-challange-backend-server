@@ -9,7 +9,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    @InjectRepository(SharedImage) 
+    @InjectRepository(SharedImage)
     private sharedImageRepository: Repository<SharedImage>,
   ) {}
 
@@ -25,15 +25,17 @@ export class UserService {
   }
 
   async findById(userId: string): Promise<User | undefined> {
-    const user = await this.userRepository.findOne({ where: { id: userId },
-      relations: ['favorites'],  });
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['favorites'],
+    });
     if (!user) {
       throw new NotFoundException(`User with id ${userId} not found`);
     }
     return user;
   }
 
-async addFavorite(userId: string, imageId: string): Promise<User> {
+  async addFavorite(userId: string, imageId: string): Promise<User> {
     const user = await this.findById(userId);
     const image = await this.sharedImageRepository.findOne({
       where: { id: imageId },
@@ -51,10 +53,14 @@ async addFavorite(userId: string, imageId: string): Promise<User> {
 
   async removeFavorite(userId: string, imageId: string): Promise<User> {
     const user = await this.findById(userId);
-    const imageIndex = user.favorites.findIndex(image => image.id === imageId);
+    const imageIndex = user.favorites.findIndex(
+      (image) => image.id === imageId,
+    );
 
     if (imageIndex === -1) {
-      throw new NotFoundException(`Image with id ${imageId} not found in user's favorites`);
+      throw new NotFoundException(
+        `Image with id ${imageId} not found in user's favorites`,
+      );
     }
 
     user.favorites.splice(imageIndex, 1);

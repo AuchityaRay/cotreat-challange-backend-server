@@ -1,16 +1,33 @@
-import { Controller, Get, Param, ParseIntPipe, Post, Body, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Body,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.entity';
 import { SharedImage } from 'src/shared-Images/sharedImage.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { AuthService } from '../auth/auth.service';
+import { Public } from 'src/auth/decorators/public.decorator';
 
+@UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
-
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+  ) {}
+  @Public()
   @Post('login')
-  async login(@Body('username') username: string): Promise<{ userId: string }> {
+  async login(@Body('username') username: string): Promise<{ userId: string,  access_token: string  }> {
     const user = await this.userService.findOrCreate(username);
-    return { userId: user.id };
+    // 
+    return this.authService.login(user);  
   }
 
   @Get(':id')
@@ -36,7 +53,9 @@ export class UserController {
 
   // get all favorite images of a user
   @Get(':userId/favorites')
-  async getUserFavorites(@Param('userId') userId: string): Promise<SharedImage[]> {
+  async getUserFavorites(
+    @Param('userId') userId: string,
+  ): Promise<SharedImage[]> {
     return this.userService.getUserFavorites(userId);
   }
 }

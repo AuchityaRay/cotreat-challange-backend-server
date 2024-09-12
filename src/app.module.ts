@@ -8,11 +8,13 @@ import { UserModule } from './user/user.module';
 import { User } from './user/user.entity';
 import { SharedImage } from './shared-Images/sharedImage.entity';
 import { SharedImagesModule } from './shared-Images/sharedImages.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    AuthModule,
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
@@ -26,6 +28,7 @@ import { SharedImagesModule } from './shared-Images/sharedImages.module';
     }),
     UserModule,
     SharedImagesModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
